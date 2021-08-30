@@ -16,17 +16,17 @@ class SideDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.shopping_cart),
-            title: Text('Cart'),
+            title: Text('Scanner'),
             onTap: () => {Navigator.of(context).pop()},
           ),
           ListTile(
             leading: Icon(Icons.border_color),
-            title: Text('Feedback'),
+            title: Text('Rota'),
             onTap: () => {Navigator.of(context).pop()},
           ),
           ListTile(
             leading: Icon(Icons.exit_to_app),
-            title: Text('Logout'),
+            title: Text('Me'),
             onTap: () => {Navigator.of(context).pop()},
           ),
         ],

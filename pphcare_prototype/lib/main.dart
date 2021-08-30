@@ -7,8 +7,8 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:pphcare_prototype/screens/login_page.dart';
-import 'package:pphcare_prototype/screens/menu_page.dart';
+import 'package:pphcare_prototype/screens/both/login_page.dart';
+import 'package:pphcare_prototype/screens/both/menu_page.dart';
 import 'package:provider/provider.dart';
 
 import 'package:pphcare_prototype/services/authentication_service.dart';
