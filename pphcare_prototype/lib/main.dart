@@ -3,18 +3,14 @@
 // found in the LICENSE file.
 
 import 'dart:async';
-import 'dart:html';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_analytics/observer.dart';
-
+import 'package:pphcare_prototype/screens/login_page.dart';
+import 'package:pphcare_prototype/screens/menu_page.dart';
 import 'package:provider/provider.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
-// Import the firebase_core plugin
-import 'package:firebase_core/firebase_core.dart';
 import 'package:pphcare_prototype/services/authentication_service.dart';
 
 Future<void> main() async {
@@ -26,47 +22,37 @@ Future<void> main() async {
 class PPHCareApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.indigo,
-      ),
-      home: HomePage(title: "Philip Parkinson Homecare"),
-    );
+    return MultiProvider(
+        providers: [
+          Provider<AuthenticationService>(
+            create: (context) => AuthenticationService(),
+          ),
+          StreamProvider(
+            create: (context) =>
+                context.read<AuthenticationService>().authStateChanges,
+            initialData: null,
+          )
+        ],
+        child: MaterialApp(
+          title: 'Flutter Authentication',
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            primaryColor: Colors.indigo,
+            primarySwatch: Colors.indigo,
+          ),
+          home: AuthenticationWrapper(),
+        ));
   }
 }
 
-class HomePage extends StatefulWidget {
-  HomePage({Key? key, required this.title}) : super(key: key);
-  final String title;
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
+class AuthenticationWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-    );
+    final firebaseUser = context.watch<User?>();
+    if (firebaseUser == null) {
+      return LoginPage();
+    } else {
+      return MenuPage();
+    }
   }
 }
-
-// class AuthenticationWrapper extends StatelessWidget {
-//   const AuthenticationWrapper({
-//     Key key,
-//   }) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final firebaseUser = context.watch<User>();
-
-//     if (firebaseUser != null) {
-//       return TabPage();
-//     } else {
-//       return LogInPage();
-//     }
-//   }
-// }
