@@ -20,6 +20,9 @@ Future<void> main() async {
 }
 
 class PPHCareApp extends StatelessWidget {
+  static Route<dynamic> route() =>
+      MaterialPageRoute(builder: (context) => PPHCareApp());
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(

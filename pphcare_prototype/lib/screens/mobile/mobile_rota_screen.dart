@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pphcare_prototype/widgets/text_information.dart';
 
 class MobileRotaScreen extends StatelessWidget {
   @override
@@ -8,12 +9,11 @@ class MobileRotaScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Center(child: Text('Todays Current Rota')),
-          Center(child: Text('Route Details')),
-          Center(
-            child: Text(
-                'Display route details: time in, client name, address, call'),
-          )
+          TextInfo(content: 'Todays Current Rota'),
+          TextInfo(content: 'Route Details'),
+          TextInfo(
+              content:
+                  'Display route details: time in, client name, address, call')
         ],
       ),
     );

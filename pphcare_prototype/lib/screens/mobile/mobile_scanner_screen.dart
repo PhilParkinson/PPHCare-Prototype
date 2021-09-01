@@ -3,16 +3,15 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:pphcare_prototype/models/client.dart';
+import 'package:pphcare_prototype/screens/mobile/mobile_daily_record_sheet.dart';
+import 'package:pphcare_prototype/services/database_service.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class MobileScannerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [Center(child: Text('Scanner is now open')), QRViewExample()],
-      ),
-    );
+    return QRViewExample();
   }
 }
 
@@ -39,8 +38,8 @@ class _QRViewExampleState extends State<QRViewExample> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
+    if (result == null) {
+      return Column(
         children: <Widget>[
           Expanded(flex: 4, child: _buildQrView(context)),
           Expanded(
@@ -55,76 +54,23 @@ class _QRViewExampleState extends State<QRViewExample> {
                         'Barcode Type: ${describeEnum(result!.format)}   Data: ${result!.code}')
                   else
                     Text('Scan a code'),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.all(8),
-                        child: ElevatedButton(
-                            onPressed: () async {
-                              await controller?.toggleFlash();
-                              setState(() {});
-                            },
-                            child: FutureBuilder(
-                              future: controller?.getFlashStatus(),
-                              builder: (context, snapshot) {
-                                return Text('Flash: ${snapshot.data}');
-                              },
-                            )),
-                      ),
-                      Container(
-                        margin: EdgeInsets.all(8),
-                        child: ElevatedButton(
-                            onPressed: () async {
-                              await controller?.flipCamera();
-                              setState(() {});
-                            },
-                            child: FutureBuilder(
-                              future: controller?.getCameraInfo(),
-                              builder: (context, snapshot) {
-                                if (snapshot.data != null) {
-                                  return Text(
-                                      'Camera facing ${describeEnum(snapshot.data!)}');
-                                } else {
-                                  return Text('loading');
-                                }
-                              },
-                            )),
-                      )
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.all(8),
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            await controller?.pauseCamera();
-                          },
-                          child: Text('pause', style: TextStyle(fontSize: 20)),
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.all(8),
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            await controller?.resumeCamera();
-                          },
-                          child: Text('resume', style: TextStyle(fontSize: 20)),
-                        ),
-                      )
-                    ],
-                  ),
                 ],
               ),
             ),
           )
         ],
-      ),
-    );
+      );
+    } else {
+      return Center(
+          child: ElevatedButton(
+        child: Text('Scan Again'),
+        onPressed: () {
+          setState(() {
+            result = null;
+          });
+        },
+      ));
+    }
   }
 
   Widget _buildQrView(BuildContext context) {
@@ -155,8 +101,16 @@ class _QRViewExampleState extends State<QRViewExample> {
     controller.scannedDataStream.listen((scanData) {
       setState(() {
         result = scanData;
+        _onceQRScanned(result!.code);
       });
     });
+  }
+
+  void _onceQRScanned(String uid) {
+    Navigator.of(context)
+        .push(PageRouteBuilder(pageBuilder: (BuildContext context, _, __) {
+      return MobileDailyRecordScren(clientUid: uid);
+    }));
   }
 
   void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {

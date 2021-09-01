@@ -4,6 +4,9 @@ import 'package:pphcare_prototype/services/authentication_service.dart';
 import 'package:pphcare_prototype/services/validator.dart';
 
 class LoginPage extends StatelessWidget {
+  static Route<dynamic> route() =>
+      MaterialPageRoute(builder: (context) => LoginPage());
+
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _emailTextController = TextEditingController();
@@ -48,9 +51,7 @@ class LoginPage extends StatelessWidget {
                       child: Expanded(
                         child: ElevatedButton(
                           onPressed: () async {
-                            print("Log In Pressed");
                             if (_formKey.currentState!.validate()) {
-                              print("Current State is Validated");
                               if (await AuthenticationService()
                                       .signInUsingEmailPassword(
                                           email:

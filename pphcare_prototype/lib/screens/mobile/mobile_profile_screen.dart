@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:pphcare_prototype/main.dart';
+import 'package:pphcare_prototype/screens/both/login_page.dart';
 import 'package:pphcare_prototype/services/authentication_service.dart';
+import 'package:pphcare_prototype/widgets/text_information.dart';
 
 class MobileProfileScreen extends StatelessWidget {
   @override
@@ -9,11 +12,12 @@ class MobileProfileScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Center(child: Text('Profile Page Now Open')),
+          TextInfo(content: 'Profile Page Now Open'),
           // ignore: deprecated_member_use
-          RaisedButton(
+          ElevatedButton(
             onPressed: () {
               AuthenticationService().signOut();
+              Navigator.pushReplacement(context, PPHCareApp.route());
             },
             child: Text('Log Out'),
           ),

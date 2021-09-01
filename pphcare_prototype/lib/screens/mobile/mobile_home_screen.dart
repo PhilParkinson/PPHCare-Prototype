@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pphcare_prototype/widgets/text_information.dart';
 
 class MobileHomeScreen extends StatelessWidget {
   @override
@@ -12,7 +13,7 @@ class MobileHomeScreen extends StatelessWidget {
             padding: const EdgeInsets.all(10.0),
             child: Container(
               child: Center(
-                child: Text('Most Recent Activity'),
+                child: TextInfo(content: 'Most Recent Activity'),
               ),
             ),
           ),
@@ -24,7 +25,7 @@ class MobileHomeScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(10.0),
                 child: Container(
                   child: Center(
-                    child: Text('Current Route'),
+                    child: TextInfo(content: 'Current Route'),
                   ),
                 ),
               ),
@@ -32,7 +33,7 @@ class MobileHomeScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(10.0),
                 child: Container(
                   child: Center(
-                    child: Text('Hours Worked'),
+                    child: TextInfo(content: 'Hours Worked'),
                   ),
                 ),
               )
