@@ -2,7 +2,9 @@ import 'package:firebase_core/firebase_core.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:pphcare_prototype/models/care_plan_tasks.dart';
 import 'package:pphcare_prototype/models/client.dart';
+import 'package:pphcare_prototype/models/record_of_care.dart';
 import 'package:pphcare_prototype/models/user.dart';
 import 'package:pphcare_prototype/services/authentication_service.dart';
 
@@ -70,4 +72,18 @@ class DatabaseService {
         .collection('Tasks')
         .snapshots();
   }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getMARTasks(
+      String clientUid, String carePlanUid, CarePlanTask task) {
+    return clientCollection
+        .doc(clientUid)
+        .collection('carePlans')
+        .doc(carePlanUid)
+        .collection('Tasks')
+        .doc(task.uid)
+        .collection('medication')
+        .snapshots();
+  }
+
+  updateRecordOfCare(RecordOfCare dailyRecord) {}
 }

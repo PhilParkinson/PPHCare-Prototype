@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:pphcare_prototype/models/care_plan.dart';
 import 'package:pphcare_prototype/models/care_plan_tasks.dart';
 import 'package:pphcare_prototype/models/client.dart';
@@ -30,11 +31,12 @@ class CarePlanTasksCarerView extends StatelessWidget {
           if (snapshot.hasData) {
             snapshot.data!.docs.forEach((element) {
               // _carePlanTasks.add(CarePlanTask.fromJSON(element));
-              _carePlanTasks.add(CarePlanTask(
+              CarePlanTask newTask = CarePlanTask(
                   uid: element.get('uid'),
                   order: element.get('order') as int,
                   description: element.get('description'),
-                  medication: element.get('medication') as bool));
+                  medication: element.get('medication') as bool);
+              _carePlanTasks.add(newTask);
               _carePlanTasks.sort((a, b) => a.order.compareTo(b.order));
             });
             return ListView.separated(
@@ -44,9 +46,11 @@ class CarePlanTasksCarerView extends StatelessWidget {
               itemCount: _carePlanTasks.length,
               itemBuilder: (BuildContext context, int index) {
                 return CarePlanTaskListTile(
-                    task: _carePlanTasks[index],
-                    client: client,
-                    recordOfCare: dailyRecord);
+                  task: _carePlanTasks[index],
+                  client: client,
+                  recordOfCare: dailyRecord,
+                  carePlanUid: carePlan.uid,
+                );
               },
               separatorBuilder: (BuildContext context, int index) =>
                   const Divider(),
@@ -62,9 +66,13 @@ class CarePlanTaskListTile extends StatefulWidget {
   final CarePlanTask task;
   final PPHCareClient client;
   final RecordOfCare recordOfCare;
+  final String carePlanUid;
 
   const CarePlanTaskListTile(
-      {required this.task, required this.client, required this.recordOfCare});
+      {required this.task,
+      required this.client,
+      required this.recordOfCare,
+      required this.carePlanUid});
 
   @override
   _CarePlanTaskListTileState createState() => _CarePlanTaskListTileState();

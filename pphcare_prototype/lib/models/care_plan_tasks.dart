@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:pphcare_prototype/services/database_service.dart';
 
 class CarePlanTask {
   String uid;
@@ -29,4 +30,11 @@ class MAR {
   String dosage;
 
   MAR({required this.uid, required this.medicationName, required this.dosage});
+
+  static fromJSON(QueryDocumentSnapshot<Object?> snapshot) {
+    return MAR(
+        uid: snapshot['uid'] as String,
+        medicationName: snapshot['description'] as String,
+        dosage: snapshot['order'] as String);
+  }
 }
